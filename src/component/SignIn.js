@@ -25,7 +25,12 @@ function SignIn() {
       {userEmail ? (
         <Home />
       ) : (
-        <button onClick={handleClick}>Signin With Google</button>
+        <>
+          <p>Login For Edit and Delete And Comment on movies</p>
+          <button className="sort-button" onClick={handleClick}>
+            Signin With Google
+          </button>
+        </>
       )}
     </div>
   );

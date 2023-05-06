@@ -1,92 +1,138 @@
-/* Set a fixed width for the movie list */
-.movie-list {
-  width: 800px;
+/* App container */
+.container {
   margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
 }
 
-/* Style the search input */
-.movie-search {
+/* Sign in button */
+.signin-button {
+  background-color: #0077cc;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
   margin-bottom: 20px;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 16px;
 }
 
-/* Style the movie items */
-.movie-item {
+.signin-button:hover {
+  background-color: #005fa3;
+}
+
+/* Sort button */
+.sort-button {
+  background-color: #0077cc;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 10px;
+}
+
+.sort-button:hover {
+  background-color: #005fa3;
+}
+
+/* Search input */
+.search-input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Movie list */
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Movie */
+.movie {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the movie name */
-.movie-name {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* Style the movie overview */
-.movie-overview {
-  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
+  padding: 20px;
+  width: 100%;
 }
 
-/* Style the delete and edit buttons */
-.movie-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Movie title */
+.movie-title {
+  font-size: 24px;
+  margin: 0 0 10px 0;
 }
 
-.movie-buttons button {
-  background-color: #007bff;
-  color: #fff;
+/* Delete button */
+.delete-button {
+  background-color: #cc0000;
   border: none;
   border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.movie-buttons button:hover {
-  background-color: #0069d9;
-}
-
-/* Style the edit input and save button */
-.movie-edit {
-  display: flex;
-  align-items: center;
-}
-
-.movie-edit input {
+  font-size: 16px;
   margin-right: 10px;
   padding: 10px;
+}
+
+.delete-button:hover {
+  background-color: #a30000;
+}
+
+/* Edit button */
+.edit-button {
+  background-color: #0077cc;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.edit-button:hover {
+  background-color: #005fa3;
+}
+
+/* Edit input */
+.edit-input {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
-  width: 300px;
-  box-sizing: border-box;
+  margin-right: 10px;
+  padding: 10px;
+  width: 60%;
 }
 
-.movie-edit button {
-  background-color: #28a745;
-  color: #fff;
+/* Save button */
+.save-button {
+  background-color: #0077cc;
   border: none;
   border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  padding: 10px;
 }
 
-.movie-edit button:hover {
-  background-color: #218838;
+.save-button:hover {
+  background-color: #005fa3;
+}
+
+/* Movie overview */
+.movie-overview {
+  font-size: 16px;
+  margin-top: 10px;
+}
+img {
+  width: 25%;
 }

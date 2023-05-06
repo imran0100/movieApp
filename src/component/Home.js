@@ -8,7 +8,9 @@ function Home() {
   return (
     <div>
       <h1>Home Page</h1>
-      <button onClick={logout}>Logout</button>
+      <button className="sort-button" onClick={logout}>
+        Logout
+      </button>
     </div>
   );
 }

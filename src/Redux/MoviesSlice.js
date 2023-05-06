@@ -19,6 +19,13 @@ const moviesSlice = createSlice({
     deleteMovie: (state, action) => {
       state.data = state.data.filter((movie) => movie.id !== action.payload);
     },
+    editMovieName: (state, action) => {
+      const { id, name } = action.payload;
+      const movie = state.data.find((movie) => movie.id === id);
+      if (movie) {
+        movie.name = name;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -36,6 +43,6 @@ const moviesSlice = createSlice({
   },
 });
 
-export const { deleteMovie } = moviesSlice.actions;
+export const { deleteMovie, editMovieName } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
