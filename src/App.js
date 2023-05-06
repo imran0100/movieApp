@@ -1,58 +1,97 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import SignIn from "./component/SignIn";
+import { fetchMovies, deleteMovie } from "./Redux/MoviesSlice";
 
-function App() {
+const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showEditInput, setShowEditInput] = useState(false);
+  const [sortOrder, setSortOrder] = useState("asc"); // default sort order is ascending
+
+  const dispatch = useDispatch();
+  const { data, status, error } = useSelector((state) => state.movies);
+  const { userEmail } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchMovies());
+  }, [dispatch]);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "failed") {
+    return <p>Error fetching data: {error}</p>;
+  }
+
+  // create a new array and copy the data from the Redux store array into it
+  const movies = [...data];
+
+  // sort the new array based on sort order
+  movies.sort((a, b) => {
+    const titleA = a.original_title || a.name;
+    const titleB = b.original_title || b.name;
+    return sortOrder === "asc"
+      ? titleA.localeCompare(titleB)
+      : titleB.localeCompare(titleA);
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div>
+      <SignIn />
+      <button
+        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+      >
+        Sort by title {sortOrder === "asc" ? "↑" : "↓"}
+      </button>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search by title or overview..."
+      />
+      {movies
+        .filter(
+          (movie) =>
+            movie.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            movie.overview?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            movie.original_title
+              ?.toLowerCase()
+              .includes(searchQuery.toLowerCase())
+        )
+        .map((movie) => (
+          <div key={movie.id}>
+            <p>{movie.name || movie.original_title}</p>
+
+            {userEmail ? (
+              <>
+                <button onClick={() => dispatch(deleteMovie(movie.id))}>
+                  delete
+                </button>
+                <button
+                  onClick={() => {
+                    setShowEditInput(true);
+                  }}
+                >
+                  Edit Movie Name
+                </button>
+                {showEditInput && (
+                  <>
+                    {" "}
+                    <input value={movie.name}></input>
+                    <button>Save</button>
+                  </>
+                )}
+              </>
+            ) : null}
+            <p>{movie.overview}</p>
+            {/* <img
+            src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+          /> */}
+          </div>
+        ))}
     </div>
   );
-}
+};
 
 export default App;
