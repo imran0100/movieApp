@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SignIn from "./component/SignIn";
 import { fetchMovies, deleteMovie, editMovieName } from "./Redux/MoviesSlice";
+import { addComment } from "./Redux/commentSlice";
 import "./App.css";
 
 const App = () => {
@@ -9,15 +10,15 @@ const App = () => {
   const [showEditInput, setShowEditInput] = useState(false);
   const [editInputValue, setEditInputValue] = useState(""); // added state for input value
   const [sortOrder, setSortOrder] = useState("asc");
-
+  const [inputComment, setInputComment] = useState("");
   const dispatch = useDispatch();
   const { data, status, error } = useSelector((state) => state.movies);
   const { userEmail } = useSelector((state) => state.auth);
-
+  const { commentData } = useSelector((state) => state.comments);
   useEffect(() => {
     dispatch(fetchMovies());
   }, [dispatch]);
-
+  console.log(commentData);
   if (status === "loading") {
     return <p>Loading...</p>;
   }
@@ -27,6 +28,7 @@ const App = () => {
   }
 
   const movies = [...data];
+  console.log(inputComment);
   console.log(movies);
   movies.sort((a, b) => {
     const titleA = a.original_title || a.name;
@@ -35,6 +37,11 @@ const App = () => {
       ? titleA.localeCompare(titleB)
       : titleB.localeCompare(titleA);
   });
+  console.log(commentData);
+  const handleComment = (movieId) => {
+    dispatch(addComment({ movieId: inputComment })); // dispatch the addComment action with the inputComment value
+    setInputComment(""); // reset the inputComment value
+  };
 
   const handleEditMovieName = (movieId) => {
     dispatch(editMovieName({ id: movieId, name: editInputValue }));
@@ -55,7 +62,7 @@ const App = () => {
         type="text"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search by title or overview..."
+        placeholder="Search by Movie Name or Description..."
       />
       <div className="movie-list">
         {movies
@@ -75,7 +82,6 @@ const App = () => {
                 {movie.name || movie.original_title}
               </h3>
               <div>
-                {" "}
                 <img
                   alt="Movie Poster"
                   src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
@@ -94,13 +100,26 @@ const App = () => {
                     <button
                       className="edit-button"
                       onClick={() => {
-                        setEditInputValue(movie.name || movie.original_title); // set the initial value of the input to the current movie name
+                        setEditInputValue(movie.name || movie.original_title);
                         setShowEditInput(true);
                       }}
                     >
                       Edit Movie Name
                     </button>
                   )}
+                  {commentData.map((comment) => (
+                    <p key={Math.random() * 456278985665588}>
+                      {comment.movieId}
+                    </p>
+                  ))}
+                  <input
+                    value={inputComment}
+                    onChange={(e) => setInputComment(e.target.value)}
+                  ></input>
+                  <button onClick={() => handleComment(movie.id)}>
+                    Add Comment
+                  </button>
+
                   {showEditInput && (
                     <>
                       <input
