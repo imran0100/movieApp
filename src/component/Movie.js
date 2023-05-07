@@ -38,12 +38,13 @@ export default function Movie({ movie, goBackToMovieList }) {
 
   const handleEditComment = (movieId) => {
     dispatch(editComment({ id: movieId, comment: editedComment }));
-    setShowEditComment(false);
+    setEditedComment("");
   };
 
   const handleComment = (movieId) => {
     dispatch(addComment({ id: movieId, comment: inputComment }));
     setInputComment("");
+    setShowEditComment(!showEditComment);
   };
 
   return (
@@ -81,6 +82,7 @@ export default function Movie({ movie, goBackToMovieList }) {
                 <>
                   <input
                     value={editedComment}
+                    placeholder="Edit and Update Comment"
                     onChange={(e) => setEditedComment(e.target.value)}
                   />
                   <button onClick={() => handleEditComment(comment.id)}>
@@ -90,11 +92,18 @@ export default function Movie({ movie, goBackToMovieList }) {
               )}
             </div>
           ))}
-          <input
-            value={inputComment}
-            onChange={(e) => setInputComment(e.target.value)}
-          ></input>
-          <button onClick={() => handleComment(movie.id)}>Add Comment</button>
+
+          {!showEditComment && (
+            <>
+              <input
+                value={inputComment}
+                onChange={(e) => setInputComment(e.target.value)}
+              ></input>
+              <button onClick={() => handleComment(movie.id)}>
+                Add Comment
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>
