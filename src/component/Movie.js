@@ -1,14 +1,15 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { addComment } from "../Redux/commentSlice";
+import { addComment, editComment } from "../Redux/commentSlice";
 import axios from "axios";
 
 export default function Movie({ movie, goBackToMovieList }) {
   const { commentData } = useSelector((state) => state.comments);
   const [inputComment, setInputComment] = useState("");
   const [trailerKey, setTrailerKey] = useState(null);
-
+  const [editedComment, setEditedComment] = useState("");
+  const [showEditComment, setShowEditComment] = useState(false);
   const dispatch = useDispatch();
   const { userEmail } = useSelector((state) => state.auth);
 
@@ -30,13 +31,18 @@ export default function Movie({ movie, goBackToMovieList }) {
 
     fetchMovieDetails();
   }, [movie.id]);
-
+  console.log(commentData);
   if (!trailerKey) {
     return null;
   }
 
+  const handleEditComment = (movieId) => {
+    dispatch(editComment({ id: movieId, comment: editedComment }));
+    setShowEditComment(false);
+  };
+
   const handleComment = (movieId) => {
-    dispatch(addComment({ movieId: inputComment }));
+    dispatch(addComment({ id: movieId, comment: inputComment }));
     setInputComment("");
   };
 
@@ -63,7 +69,26 @@ export default function Movie({ movie, goBackToMovieList }) {
       {userEmail && (
         <div>
           {commentData.map((comment) => (
-            <p key={Math.random() * 456278985665588}>{comment.movieId}</p>
+            <div>
+              <p key={Math.random() * 456278985665588}>{comment.comment}</p>
+              {!showEditComment && (
+                <button onClick={() => setShowEditComment(!showEditComment)}>
+                  edit comment
+                </button>
+              )}
+
+              {showEditComment && (
+                <>
+                  <input
+                    value={editedComment}
+                    onChange={(e) => setEditedComment(e.target.value)}
+                  />
+                  <button onClick={() => handleEditComment(comment.id)}>
+                    Save
+                  </button>
+                </>
+              )}
+            </div>
           ))}
           <input
             value={inputComment}
